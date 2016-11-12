@@ -1,11 +1,52 @@
-
 angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', 'leafletData',
     function($scope, leafletData) {
+		
+		var vcenter = angular.extend($scope, {           	
+		        center: {
+		            lat: -34.7694071,
+		            lng: -58.2560052,
+		            zoom: 9
+		        },			
+		});
+	
         leafletData.getMap().then(function(map) {
         	var vmap=map;
         	var scope = $scope;
         	var marker = null;
-        	vmap.setView([-34.7694071, -58.2560052], 7);
+
+        	//guarda una funcion para setear markers;
+    		var agregarMarker = function() {
+    			//funcion primaria para setear el Marker
+    			this.setMarker=function(lat,lng){
+    				if(marker == null){
+    					 marker = L.marker([lat,lng]);
+    					 this.markerPopUp(marker,lat,lng);
+    					 return marker;
+    				}else{
+    					marker.setLatLng([lat,lng])
+    					this.markerPopUp(marker,lat,lng)
+    					return marker
+    				}
+    			}
+    			//Le agrega el PopUp al marker (usada internamente)
+    			//puede ser unsada externamente
+    			this.markerPopUp = function(marker, lat,lng){
+    				marker.bindPopup('<div>Te encuentras aca!<div>'+
+        							'<div> Latitud:'+lat +'</div>'+
+        							'<div> Longitud:'+lng+'</div>')
+    			}
+    		}
+    		
+        	$scope.localizar = function(){
+        		vcenter.center.autoDiscover=true;
+        		vcenter.center.zoom = 15;
+        	}    
+        	
+        	$scope.marcar = function(){
+        		new agregarMarker().setMarker(scope.center.lat,scope.center.lng)
+        		.addTo(vmap)
+        		.openPopup();
+        	}
         	
         	$scope.buscar = function(){
         		//guarda un httpRequest;
@@ -22,28 +63,7 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', 'leafletD
         				anHttpRequest.send( null );
         			}
         		}
-        		//guarda una funcion para setear markers;
-        		var agregarMarker = function() {
-        			//funcion primaria para setear el Marker
-        			this.setMarker=function(lat,lng){
-        				if(marker == null){
-        					 marker = L.marker([lat,lng]);
-        					 this.markerPopUp(marker,lat,lng);
-        					 return marker;
-        				}else{
-        					marker.setLatLng([lat,lng])
-        					this.markerPopUp(marker,lat,lng)
-        					return marker
-        				}
-        			}
-        			//Le agrega el PopUp al marker (usada internamente)
-        			//puede ser unsada externamente
-        			this.markerPopUp = function(marker, lat,lng){
-        				marker.bindPopup('<div>Te encuentras aca!<div>'+
-            							'<div> Latitud:'+lat +'</div>'+
-            							'<div> Longitud:'+lng+'</div>')
-        			}
-        		}
+
         		//Arma la query
         		encodedQuery=scope.gmaps.calle + '+' + scope.gmaps.altura + '+' + scope.gmaps.partido + '+' + scope.gmaps.pais;
         		aQuery = new HttpClient();

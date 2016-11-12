@@ -47,15 +47,17 @@
     	
 	 <!-- <div ng-viewport ng-controller="RouterController"></div> -->
 	 
+	
+	 
 	<md-toolbar class="md-warn">
          <div class="md-toolbar-tools">
             <h2 class="md-flex">MapGeocoderPrototype</h2>
          </div>
     </md-toolbar>
     
-    <div layout="row">
+    <div layout="row" ng-controller="MapGeocoder">
                  	
-         <div ng-controller="MapGeocoder">
+         <div>
                   <md-input-container class="md-block">
              <label>Calle</label>
               <input ng-model="gmaps.calle">
@@ -80,13 +82,20 @@
                <md-button class="md-raised md-primary" ng-click="buscar()">
                   Buscar!
                </md-button>
-         </md-content>
+               <!--  <md-button class="md-raised md-primary" ng-click="localizar()">
+                  Localizar!
+               </md-button>
+               <md-button class="md-raised md-primary" ng-click="marcar()">
+                  Marcar!
+               </md-button>
+               -->
+          </md-content>
           <md-input-container class="md-block">
              <label>{{result}}</label>
           </md-input-container>          
         </div> 
         
-        <leaflet  width="100%" height="500px"></leaflet>
+        <leaflet center="center" width="100%" height="500px"></leaflet>
     </div>   
 
   </body>
