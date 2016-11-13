@@ -1,9 +1,8 @@
 angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','leafletData',
     function($scope, $q, leafletData) {
 		/*-------------------------------
-		 *------Variables Generales------
+		 *------Variables Gobales------
 		 *------------------------------*/
-		var scope = $scope;
     	var calle;
     	var altura;
     	var partido;
@@ -32,7 +31,6 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
         	//variables para callbacks
     		var ejecutarLocalizar = $q.all([$scope.localizar]);
         	var vmap=map;
-        	var scope = $scope;
         	var marker = null;
         	vmap.setView([-34.7739,-58.5520]);
         	vmap.setZoom(9);
@@ -140,10 +138,10 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
             			latitud = json.lat;
             			longitud = json.lng;
         				loadproperties();
-        				scope.result="success"
+        				$scope.result="success"
         				
         			}else{
-        				scope.result = "Error!";
+        				$scope.result = "Error!";
         			}
         		});        		
         	}
@@ -152,7 +150,7 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
         	$scope.buscar = function(){
         		
         		//Arma la query
-        		encodedQuery=scope.calle + '+' + scope.altura + '+' + scope.partido + '+' + scope.pais;
+        		encodedQuery=$scope.calle + '+' + $scope.altura + '+' + $scope.partido + '+' + $scope.pais;
         		aQuery = new HttpClient();
         		//Ejecuta la query y delega la respuesta (response) a la funcion anonima
         		aQuery.get('https://maps.googleapis.com/maps/api/geocode/json?address='+encodedQuery+'+&key=AIzaSyD_8mUpLuoMmB6qSW_kI3vQXY7jpvbfnB4', function(response) {
@@ -167,10 +165,10 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
             			longitud = json.lng;
             			loadproperties();
         				vmap.setView([json.lat, json.lng], 15);
-        				scope.result ="Success!";
+        				$scope.result ="Success!";
         			}else{
         				console.log(encodedQuery);
-        				scope.result = "Error!";
+        				$scope.result = "Error!";
         			}
         		});
             }
