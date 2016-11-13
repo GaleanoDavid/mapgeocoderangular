@@ -10,6 +10,17 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
     	var latitud;
     	var longitud;
     	
+    	var greenIcon = L.icon({
+    	    iconUrl: 'assets/images/leaf-green.png',
+    	    shadowUrl: 'assets/images/leaf-shadow.png',
+
+    	    iconSize:     [38, 95], // size of the icon
+    	    shadowSize:   [50, 64], // size of the shadow
+    	    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    	    shadowAnchor: [4, 62],  // the same for the shadow
+    	    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    	});
+    	
 		//guarda un httpRequest;
 		var HttpClient = function() {
 			//genera un httpGET request;
@@ -40,11 +51,11 @@ angular.module('mapaAngularTest').controller('MapGeocoder', ['$scope', '$q','lea
     			this.setMarker = function(lat,lng){
     				console.log("marking");
     				if(marker == null){
-    					 marker = L.marker([lat,lng]);
+    					 marker = L.marker([lat,lng]).setIcon(greenIcon);
     					 this.markerPopUp(marker,lat,lng);
     					 return marker;
     				}else{
-    					marker.setLatLng([lat,lng])
+    					marker.setLatLng([lat,lng]).setIcon(greenIcon);
     					this.markerPopUp(marker,lat,lng)
     					return marker
     				}
